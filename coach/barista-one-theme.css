@@ -1,0 +1,29 @@
+/* Barista One: slate blue, apron beige and charcoal. */
+body.barista-one-theme{background:#395b6a;color:#f5f0e9;min-height:100vh}
+body.barista-one-theme header{background:#d0c4b8;border-color:#353635}
+body.barista-one-theme header h1,body.barista-one-theme header small{color:#353635}
+body.barista-one-theme .card,body.barista-one-theme #assess .assessment-details{background:#e9e1d7;border-color:#a99f95;color:#353635;box-shadow:none}
+body.barista-one-theme p,body.barista-one-theme small,body.barista-one-theme .muted{color:inherit}
+body.barista-one-theme button,body.barista-one-theme input,body.barista-one-theme select,body.barista-one-theme textarea{background:#f5f0e9;color:#353635;border-color:#8d8a85}
+body.barista-one-theme button:hover{background:#d0c4b8}
+body.barista-one-theme button.primary,body.barista-one-theme button.ok,body.barista-one-theme .score-view-icons button[aria-pressed=true],body.barista-one-theme nav button.active{background:#395b6a;color:#fff;border-color:#395b6a}
+body.barista-one-theme button.primary:hover{background:#2b4652}
+body.barista-one-theme button.bad{background:#984740;color:#fff;border-color:#984740}
+body.barista-one-theme .heading-home{background:none;border:0;color:#353635}
+body.barista-one-theme .pair-heading{color:#395b6a}
+body.barista-one-theme .check{border-color:#b9b0a7}
+body.barista-one-theme #assess .timer-dock{background:#395b6a}
+body.barista-one-theme .clock-panel:not(.warning):not(.urgent):not(.overtime){background:#303a3f;border-color:#a99f95}
+body.barista-one-theme .clock-panel:not(.warning):not(.urgent):not(.overtime) .time,body.barista-one-theme .clock-panel:not(.warning):not(.urgent):not(.overtime) .remaining{color:#f2e8dc}
+body.barista-one-theme #timeFill{background:#d0c4b8}
+body.barista-one-theme .criterion-comment{background:#dad2c8}
+body.barista-one-theme button:focus-visible,body.barista-one-theme input:focus-visible,body.barista-one-theme select:focus-visible,body.barista-one-theme textarea:focus-visible{outline:3px solid #a87132;outline-offset:2px}
+body.barista-one-theme .paper{color:#353635;background:white}
+body.barista-one-theme .paper-banner{background:#395b6a;color:white}
+body.barista-one-theme .paper p,body.barista-one-theme .paper .result-stamp{color:#353635}
+body.barista-one-theme .paper-banner p{color:white}
+body.barista-one-theme .score-table th{background:#e9e1d7}
+body.barista-one-theme .score-table th,body.barista-one-theme .score-table td{color:#353635;border-color:#a99f95}
+body.barista-one-theme .sheet-toolbar{color:#f5f0e9}
+body.barista-one-theme .sheet-clock{color:#f5f0e9}
+@media print{body.barista-one-theme .paper-banner,body.barista-one-theme .score-table th{print-color-adjust:exact;-webkit-print-color-adjust:exact}}

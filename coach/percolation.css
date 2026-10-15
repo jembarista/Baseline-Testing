@@ -1,0 +1,32 @@
+body.percolation-theme{background:#e9ddee;color:#343036;min-height:100vh}
+body.percolation-theme header{background:#d8c6df;border-color:#9b83a7}
+body.percolation-theme header h1,body.percolation-theme header small,body.percolation-theme p,body.percolation-theme small{color:#443b49}
+body.percolation-theme .card,body.percolation-theme #assess .assessment-details{background:#f7f4eb;border-color:#b6a4be}
+body.percolation-theme button,body.percolation-theme input,body.percolation-theme textarea,body.percolation-theme select{background:#f6f0f8;color:#343036;border-color:#aa96b2}
+body.percolation-theme button.primary,body.percolation-theme button.ok,body.percolation-theme .score-view-icons button[aria-pressed=true]{background:#675172;color:white;border-color:#675172}
+body.percolation-theme button.bad{background:#984c5d;color:white}
+body.percolation-theme .heading-home{background:none;border:0}
+body.percolation-theme .pair-heading,body.percolation-theme .sheet-clock{color:#675172}
+body.percolation-theme #assess .timer-dock{background:#e9ddee}
+body.percolation-theme .clock-panel:not(.warning):not(.urgent):not(.overtime){background:#514659;border-color:#514659}
+body.percolation-theme .time,body.percolation-theme .remaining{color:#fff5cf}
+body.percolation-theme #timeFill{background:#e6d88c}
+body.percolation-theme .check{border-color:#d1c2d8}
+body.percolation-theme .paper-banner{background:#675172}
+body.percolation-theme .paper-banner p{color:white}
+body.percolation-theme .score-table th{background:#e9ddee}
+body.percolation-theme .score-table td,body.percolation-theme .score-table th{color:#343036;border-color:#aa96b2}
+body.percolation-theme .criterion-comment{background:#e9ddee}
+body.percolation-theme #assess .three-brews .pair-row{grid-template-columns:minmax(0,1fr) repeat(3,65px);gap:3px}
+body.percolation-theme #assess .three-brews .row{gap:2px}
+body.percolation-theme #assess .three-brews button{min-width:30px;width:30px;padding:1px}
+/* One generous score control per brew keeps the three-column sheet clear. */
+body.percolation-theme #assess .three-brews .pair-row{grid-template-columns:minmax(0,1fr) repeat(3,48px);gap:6px}
+body.percolation-theme #assess .three-brews .check{padding:4px 0;min-height:52px;font-size:13px;line-height:1.25}
+body.percolation-theme #assess .three-brews .row{justify-content:center}
+body.percolation-theme #assess .three-brews button{width:44px;min-width:44px;min-height:44px;font-size:23px;border-radius:10px}
+@media(max-width:700px){
+ body.percolation-theme #assess .three-brews .pair-row{grid-template-columns:minmax(0,1fr) repeat(3,44px);gap:5px}
+ body.percolation-theme #assess .three-brews .check{padding:1px 0;min-height:28px;font-size:12px;line-height:1.15}
+ body.percolation-theme #assess .three-brews button{width:40px;min-width:40px;min-height:25px;padding:1px 6px;font-size:18px;line-height:21px;border-radius:6px}
+}

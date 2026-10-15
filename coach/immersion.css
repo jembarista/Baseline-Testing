@@ -1,0 +1,38 @@
+body.immersion-theme{background:#eadbd1;color:#35231f;min-height:100vh}
+body.immersion-theme header{background:#d5b9a6;border-color:#8d5944}
+body.immersion-theme header h1,body.immersion-theme header small,body.immersion-theme p,body.immersion-theme small{color:#4a2b24}
+body.immersion-theme .card,body.immersion-theme #assess .assessment-details{background:#faf2e5;border-color:#b69580}
+body.immersion-theme button,body.immersion-theme input,body.immersion-theme textarea,body.immersion-theme select{background:#f5e8d8;color:#35231f;border-color:#b08d78}
+body.immersion-theme button.primary,body.immersion-theme button.ok,body.immersion-theme .score-view-icons button[aria-pressed=true]{background:#6c241f;color:white;border-color:#6c241f}
+body.immersion-theme button.bad{background:#9e3e30;color:white}
+body.immersion-theme .heading-home{background:none;border:0}
+body.immersion-theme .pair-heading,body.immersion-theme .sheet-clock{color:#6c241f}
+body.immersion-theme #assess .timer-dock{background:#eadbd1}
+body.immersion-theme .clock-panel:not(.warning):not(.urgent):not(.overtime){background:#3d1713;border-color:#3d1713}
+body.immersion-theme .time,body.immersion-theme .remaining{color:#fff5cf}
+body.immersion-theme #timeFill{background:#e6d88c}
+body.immersion-theme .check{border-color:#dbc0ac}
+body.immersion-theme .paper-banner{background:#6c241f}
+body.immersion-theme .paper-banner p{color:white}
+body.immersion-theme .score-table th{background:#eadbd1}
+body.immersion-theme .score-table td,body.immersion-theme .score-table th{color:#35231f;border-color:#b08d78}
+body.immersion-theme .criterion-comment{background:#eadbd1}
+body.immersion-theme #assess .three-brews .pair-row{grid-template-columns:minmax(0,1fr) repeat(3,65px);gap:3px}
+body.immersion-theme #assess .three-brews .row{gap:2px}
+body.immersion-theme #assess .three-brews button{min-width:30px;width:30px;padding:1px}
+/* One generous score control per brew keeps the three-column sheet clear. */
+body.immersion-theme #assess .three-brews .pair-row{grid-template-columns:minmax(0,1fr) repeat(3,48px);gap:6px}
+body.immersion-theme #assess .three-brews .check{padding:4px 0;min-height:52px;font-size:13px;line-height:1.25}
+body.immersion-theme #assess .three-brews .row{justify-content:center}
+body.immersion-theme #assess .three-brews button{width:44px;min-width:44px;min-height:44px;font-size:23px;border-radius:10px}
+@media(max-width:700px){
+ body.immersion-theme #assess .three-brews .pair-row{grid-template-columns:minmax(0,1fr) repeat(3,44px);gap:5px}
+ body.immersion-theme #assess .three-brews .check{padding:1px 0;min-height:28px;font-size:12px;line-height:1.15}
+ body.immersion-theme #assess .three-brews button{width:40px;min-width:40px;min-height:25px;padding:1px 6px;font-size:18px;line-height:21px;border-radius:6px}
+}
+
+body.immersion-theme{background:#4b1815;color:#fff3de}body.immersion-theme .card{color:#35231f}body.immersion-theme #assess .timer-dock{background:#4b1815}body.immersion-theme #stageTitle,body.immersion-theme .below-scoresheet,body.immersion-theme .sheet-toolbar{color:#fff3de}body.immersion-theme .paper{color:#35231f}body.immersion-theme .paper-banner p{color:white}
+
+.immersion-logo{width:64px;height:48px;object-fit:cover;border-radius:8px;flex-shrink:0}
+@media(max-width:700px){body.immersion-theme header .immersion-logo{width:42px;height:32px}}
+.paper-banner .immersion-logo{width:64px;height:48px}
