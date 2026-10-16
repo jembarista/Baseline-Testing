@@ -23,13 +23,13 @@ body.immersion-theme #assess .three-brews .row{gap:2px}
 body.immersion-theme #assess .three-brews button{min-width:30px;width:30px;padding:1px}
 /* One generous score control per brew keeps the three-column sheet clear. */
 body.immersion-theme #assess .three-brews .pair-row{grid-template-columns:minmax(0,1fr) repeat(3,48px);gap:6px}
-body.immersion-theme #assess .three-brews .check{padding:4px 0;min-height:52px;font-size:13px;line-height:1.25}
+body.immersion-theme #assess .three-brews .check{padding:4px 0;min-height:52px;font-size:calc(13px * var(--text-scale, 1));line-height:1.25}
 body.immersion-theme #assess .three-brews .row{justify-content:center}
-body.immersion-theme #assess .three-brews button{width:44px;min-width:44px;min-height:44px;font-size:23px;border-radius:10px}
+body.immersion-theme #assess .three-brews button{width:44px;min-width:44px;min-height:44px;font-size:calc(23px * var(--text-scale, 1));border-radius:10px}
 @media(max-width:700px){
  body.immersion-theme #assess .three-brews .pair-row{grid-template-columns:minmax(0,1fr) repeat(3,44px);gap:5px}
- body.immersion-theme #assess .three-brews .check{padding:1px 0;min-height:28px;font-size:12px;line-height:1.15}
- body.immersion-theme #assess .three-brews button{width:40px;min-width:40px;min-height:25px;padding:1px 6px;font-size:18px;line-height:21px;border-radius:6px}
+ body.immersion-theme #assess .three-brews .check{padding:1px 0;min-height:28px;font-size:calc(12px * var(--text-scale, 1));line-height:1.15}
+ body.immersion-theme #assess .three-brews button{width:40px;min-width:40px;min-height:25px;padding:1px 6px;font-size:calc(18px * var(--text-scale, 1));line-height:21px;border-radius:6px}
 }
 
 body.immersion-theme .card{color:#35231f}body.immersion-theme #stageTitle,body.immersion-theme .below-scoresheet,body.immersion-theme .sheet-toolbar{color:#4a2b24}body.immersion-theme .paper{color:#35231f}
@@ -42,7 +42,7 @@ body.immersion-theme .paper-banner{background:#ead6c5;color:#4a2b24}body.immersi
 
 /* Match Barista One criterion labels; score-button rules must not resize labels. */
 @media(max-width:700px){
- body.immersion-theme #assess .three-brews button.criterion-description{width:auto;min-width:0;min-height:0;padding:2px 0;font-size:10px;line-height:1.15;white-space:nowrap;letter-spacing:normal;word-spacing:normal}
+ body.immersion-theme #assess .three-brews button.criterion-description{width:auto;min-width:0;min-height:0;padding:2px 0;font-size:calc(10px * var(--text-scale, 1));line-height:1.15;white-space:nowrap;letter-spacing:normal;word-spacing:normal}
 }
 
 body.immersion-theme .below-scoresheet details{background:#fffaf3;color:#4a2b24;border:1px solid #c8a98e;border-radius:10px;padding:0 12px;margin:10px 0}
