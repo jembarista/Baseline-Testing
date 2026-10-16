@@ -1,7 +1,8 @@
+let visibleScreen="home",screenTrail=[],goingBack=false;
 let demoCoachActive=false;
 const $=id=>document.getElementById(id);let criteria={version:1,limits:[25,30,50],dose:17,tolerance:.2,brew:1,yieldTarget:null,yieldTolerance:2,rationale:''},session=null,index=0;
 const titles=['Make an espresso in 25 seconds','Make a long black','Make four single espressos'];
-function view(id){const one=['assess','sheet','summary'].includes(id)&&isBaristaOne();document.body.classList.toggle('barista-one-theme',one);const perc=['assess','sheet','summary'].includes(id)&&isPercolation();document.body.classList.toggle('percolation-theme',perc);$('percolationLogo').hidden=!perc;const imm=['assess','sheet','summary'].includes(id)&&isImmersion();document.body.classList.toggle('immersion-theme',imm);$('immersionLogo').hidden=!imm;$('pageHeading').textContent=imm?'Immersion Baseline Testing':perc?'Percolation Baseline Testing':one?'Barista One Baseline Testing':'Baseline Testing';$('baristaOneLogo').hidden=!one;$('defaultBhLogo').style.display=one||perc||imm?'none':'';if($('homeNav'))$('homeNav').hidden=id==='home';if(id==='certificate')id='coachAccess';document.body.classList.toggle('certificate-print',id==='certificate');['home','setup','barSetup','assess','summary','sheet','classroom','certificate','coachAccess'].forEach(x=>$(x).hidden=x!==id)}
+function view(id){if(id==='setup')refreshSavedAssessment();if(id!==visibleScreen){if(!goingBack)screenTrail.push({screen:visibleScreen,stage:index});visibleScreen=id}$('backButton').hidden=id==='home';const one=['assess','sheet','summary'].includes(id)&&isBaristaOne();document.body.classList.toggle('barista-one-theme',one);const perc=['assess','sheet','summary'].includes(id)&&isPercolation();document.body.classList.toggle('percolation-theme',perc);$('percolationLogo').hidden=!perc;const imm=['assess','sheet','summary'].includes(id)&&isImmersion();document.body.classList.toggle('immersion-theme',imm);$('immersionLogo').hidden=!imm;$('pageHeading').textContent=imm?'Immersion Baseline Testing':perc?'Percolation Baseline Testing':one?'Barista One Baseline Testing':'Baseline Testing';$('baristaOneLogo').hidden=!one;$('defaultBhLogo').style.display=one||perc||imm?'none':'';if($('homeNav'))$('homeNav').hidden=id==='home';if(id==='certificate')id='coachAccess';document.body.classList.toggle('certificate-print',id==='certificate');['home','setup','barSetup','assess','summary','sheet','classroom','certificate','coachAccess'].forEach(x=>$(x).hidden=x!==id)}
 function notice(s){$('notice').textContent=s}
 function valid(c){return c&&c.version===1&&Array.isArray(c.limits)&&[2,3].includes(c.limits.length)&&c.limits.every(n=>Number.isFinite(n)&&n>0&&n<3600)&&Number.isFinite(c.dose)&&c.dose>0&&Number.isFinite(c.tolerance)&&c.tolerance>=0&&c.tolerance<c.dose&&Number.isFinite(c.brew)&&c.brew>=0&&typeof c.rationale==='string'&&(c.yieldTarget==null||(Number.isFinite(c.yieldTarget)&&c.yieldTarget>0))&&(c.yieldTolerance==null||(Number.isFinite(c.yieldTolerance)&&c.yieldTolerance>=0))}
 function download(name,data){let a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
@@ -37,7 +38,21 @@ function renderChecks(){
 function evaluate(s,i){let missing=checksFor(i).filter(([k])=>s.checks[k]!==true).map(([,label])=>label);let doses=s.observed.split(',').map(x=>Number(x.trim()));let doseOK=!needsDose(i)||(s.observed.trim()!==''&&doses.length===(isPaired(i)?2:1)&&doses.every(d=>Number.isFinite(d)&&Math.abs(d-session.criteria.dose)<=session.criteria.tolerance+1e-9));return {pass:missing.length===0&&doseOK&&s.elapsed!==null&&(strictTime(i)?s.elapsed<session.criteria.limits[i]:s.elapsed<=session.criteria.limits[i]),missing,doseOK,onTime:s.elapsed!==null&&(strictTime(i)?s.elapsed<session.criteria.limits[i]:s.elapsed<=session.criteria.limits[i])}}
 function finishStage(){let s=current();if(s.started!==null)stopTimer();if(s.elapsed===null){$('feedback').textContent='Start the preparation timer first.';return}if(checksFor(index).some(([k])=>typeof s.checks[k]!=='boolean')){$('feedback').textContent='Score every check as observed or missed before saving.';return}if(!doseEntryValid(s,index)){$('feedback').textContent=isPaired(index)?'Record both dose weights, separated by a comma.':'Record the observed dose weight.';return}s.saved=true;s.result=evaluate(s,index);persist();reviewAttempt()}
 function summary(){session.stages.forEach((s,i)=>s.result=evaluate(s,i));persist();view('summary');const passed=session.stages.filter(s=>s.result?.pass).length;$('headline').textContent=isImmersion()?(passed===2?'Immersion passed · both categories passed':'Immersion not yet passed · both categories required'):passed===session.stages.length?'Complete, confident, consistent.':'A clear next step for practice.';$('summaryText').textContent=`${passed} of ${session.stages.length} challenges meet this draft criteria set. This is a pilot assessment, pending BH validation.`;$('results').replaceChildren();session.stages.forEach((s,i)=>{let box=document.createElement('div');box.className='card';let h=document.createElement('h2');h.textContent=`${s.title} · ${s.result.pass?'Meets draft criteria':'Practise again'}`;let p=document.createElement('p');let r=s.result;p.textContent=`${s.elapsed===null?'Not timed':fmt(s.elapsed)} / ${session.criteria.limits[i]}s. `+(r.missing.length?`Review: ${r.missing.join('; ')}. `:'Every observed step complete — well done. ')+(!r.onTime?'Next time, overlap independent tasks and reduce pauses. ':'')+(!r.doseOK?'Check and correct the dose to the target range. ':'');box.append(h,p);if(s.firstAttempt){let history=document.createElement('p');history.textContent=`Second attempt · first attempt: ${fmt(s.firstAttempt.elapsed)} (${s.firstAttempt.result.pass?'met criteria':'did not meet criteria'}). Approved by ${s.retryApproval.coach}${s.retryApproval.reason?': '+s.retryApproval.reason:''}`;box.append(history)}$('results').append(box)})}
-try{const saved=JSON.parse(localStorage.getItem('bh-baseline-pilot'));if(saved&&valid(saved.criteria)&&saved.schema===1&&saved.stages?.length===saved.criteria.limits.length){let b=document.createElement('button');b.textContent='Resume saved assessment';b.onclick=()=>{session=saved;index=Math.max(0,saved.stages.findIndex(s=>!s.saved));showStage()};$('setup').prepend(b)}}catch{}
+function refreshSavedAssessment(){
+ document.querySelectorAll('.certification-resume').forEach(b=>b.remove());
+ try{
+  const saved=JSON.parse(localStorage.getItem('bh-baseline-pilot'));
+  if(!saved||!valid(saved.criteria)||saved.schema!==1||saved.stages?.length!==saved.criteria.limits.length)return;
+  const card=Array.from(document.querySelectorAll('.certification-card')).find(b=>b.dataset.cert===(saved.certification||'Barista Zero Baseline Test'));
+  if(!card)return;
+  let tile=card.parentElement;
+  if(!tile.classList.contains('certification-tile')){tile=document.createElement('div');tile.className='certification-tile';card.before(tile);tile.append(card)}
+  const resume=document.createElement('button');resume.type='button';resume.className='certification-resume';resume.textContent='Resume ↗';resume.title='Resume saved assessment';
+  resume.setAttribute('aria-label','Resume saved '+(saved.certification||'Barista Zero')+' assessment');
+  resume.onclick=()=>{session=saved;index=Math.max(0,saved.stages.findIndex(s=>!s.saved));showStage()};tile.append(resume);
+ }catch{}
+}
+refreshSavedAssessment();
 
 function reviewAttempt(){
  const s=current();$('attemptReview').hidden=false;
@@ -77,10 +92,10 @@ if(['espresso','long-black','four-espressos'].includes(new URLSearchParams(locat
 function updateYieldSetup(){const required=$('control').value!=='Volumetric';$('yieldSetup').hidden=!required;$('setupYield').required=required;$('setupYield').disabled=!required}
 updateYieldSetup();
 
-function updatePracticeMode(){const practice=$('sessionMode').value==='practice';$('certificateNameField').hidden=practice;$('bhStudentIdField').hidden=practice;$('coachNameField').hidden=practice;$('beginButton').textContent=practice?'Start practice →':'Start assessment →';$('sessionHelp').textContent=practice?'Practise freely without an account. Your results stay in this browser. Practice does not issue a certificate.':'Coach assessment prototype. Certificate access stays locked until BH-approved login is connected.'}
+function updatePracticeMode(){const practice=$('sessionMode').value==='practice';$('certificateNameField').hidden=practice;$('bhStudentIdField').hidden=practice;$('coachNameField').hidden=practice;$('beginButton').textContent=practice?'Start practice →':'Start assessment →';$('beginButton').classList.toggle('primary',practice);$('takeTestButton').classList.toggle('primary',!practice);$('sessionHelp').textContent=practice?'Practise freely without an account. Your results stay in this browser. Practice does not issue a certificate.':'Coach assessment prototype. Certificate access stays locked until BH-approved login is connected.'}
 updatePracticeMode();
 
-function startPracticeSetup(){$('sessionMode').value='practice';updatePracticeMode();view('setup');$('takeTestButton').focus()}
+function startPracticeSetup(){$('sessionMode').value='practice';updatePracticeMode();view('setup');if($('beginButton').hidden)$('commenceImmersion').focus();else $('beginButton').focus()}
 
 function saveAndContinue(){
  if(index===lastStage()){finishStage();if(current().saved&&current().result.pass)summary();return}
@@ -101,7 +116,7 @@ if(['barista-one','barista-one-milk'].includes(new URLSearchParams(location.sear
 
 if(new URLSearchParams(location.search).get('demo')==='percolation'){persist=()=>{};$('cert').value='Percolation Baseline Testing';session={schema:1,mode:'practice',candidate:'DEMO',coach:'Preview coach',created:new Date().toISOString(),criteria:structuredClone(criteria),equipment:{grinder:'manual',control:'Volumetric'},stages:[]};configureTest();index=0;showStage();}
 
-if(['immersion','aeropress'].includes(new URLSearchParams(location.search).get('demo'))){persist=()=>{};$('cert').value='Immersion Baseline Testing';session={schema:1,mode:'practice',candidate:'DEMO',coach:'Preview coach',created:new Date().toISOString(),criteria:structuredClone(criteria),equipment:{grinder:'manual',control:'Volumetric'},stages:[]};configureTest();index=new URLSearchParams(location.search).get('demo')==='aeropress'?1:0;showStage();}
+if(['immersion','aeropress','cezve'].includes(new URLSearchParams(location.search).get('demo'))){if(new URLSearchParams(location.search).get('demo')==='cezve')$('immersionMethod').value='cezve';persist=()=>{};$('cert').value='Immersion Baseline Testing';session={schema:1,mode:'practice',candidate:'DEMO',coach:'Preview coach',created:new Date().toISOString(),criteria:structuredClone(criteria),equipment:{grinder:'manual',control:'Volumetric'},stages:[]};configureTest();index=new URLSearchParams(location.search).get('demo')!=='immersion'?1:0;showStage();}
 
 if(new URLSearchParams(location.search).get('demo')==='immersion-setup'){$('cert').value='Immersion Baseline Testing';startPracticeSetup();refreshTestSetup();updateImmersionPlan();}
 
@@ -115,3 +130,13 @@ function continueToTest(){if(['Barista Zero Baseline Test','Barista One Baseline
 function signInDemoCoach(){if($('demoCoachId').value.trim().toUpperCase()!=='BH-DEMO'){$('demoCoachError').textContent='Use BH-DEMO to try the demo workspace.';return}demoCoachActive=true;$('demoCoachBanner').hidden=false;$('sessionMode').value='coach';$('coach').value='Demo BH Coach';$('coach').readOnly=true;updatePracticeMode();refreshTestSetup();view('setup');$('takeTestButton').focus();}
 function takeCertificationTest(){if(demoCoachActive){$('sessionMode').value='coach';updatePracticeMode();continueToTest()}else view('coachAccess');}
 function leaveDemoCoach(){demoCoachActive=false;$('demoCoachBanner').hidden=true;$('coach').readOnly=false;$('coach').value='';startPracticeSetup();}
+
+function goBackStep(){
+ if(session && ['assess','sheet'].includes(visibleScreen) && current().started!==null){notice('Stop the current timer before going back.');return}
+ if(session)persist();
+ if(visibleScreen==='assess'&&index>0){index--;showStage();return}
+ let previous=screenTrail.pop();
+ if(!previous)previous={screen:visibleScreen==='assess'?'setup':'home',stage:0};
+ goingBack=true;
+ try{index=previous.stage;if(previous.screen==='assess'&&session)showStage();else if(previous.screen==='sheet'&&session)setScoreView(true);else{view(previous.screen);if(previous.screen==='setup')refreshTestSetup()}}finally{goingBack=false}
+}

@@ -10,3 +10,7 @@ function configureImmersion(){
 }
 
 function updateImmersionPlan(){const a=$('staticMethod').value,b=$('immersionMethod').value;$('commenceImmersion').disabled=!(a&&b);const names={aeropress:'AeroPress',syphon:'Syphon',steep:'Steep-and-release',cezve:'Cezve / ibrik'};$('immersionPlan').textContent=a&&b?`Your scoresheets: Mandatory — ${a} (3 brews); Supplementary — ${names[b]} (${immersionStandards[b].count} brews). Both must pass.`:'Choose both methods above before starting.';}
+
+function chooseBrewMethod(group,value){$(group).value=value;document.querySelectorAll('[data-method-group]').forEach(b=>{if(b.dataset.methodGroup===group)b.setAttribute('aria-pressed',String(b.dataset.method===value))});updateImmersionPlan();}
+
+function scrollBrewers(button,direction){const track=button.closest('fieldset').querySelector('.brew-card-grid');const card=track.querySelector('.brew-card');track.scrollBy({left:direction*(card.getBoundingClientRect().width+12),behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}
